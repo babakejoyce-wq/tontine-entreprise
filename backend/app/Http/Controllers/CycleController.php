@@ -35,15 +35,20 @@ class CycleController extends Controller
     // Qui a cotisé, qui manque, et est-ce débloqué ?
     public function statut(string $mois, TontineService $service)
     {
-        $cycle = CycleMensuel::where('mois', $mois)->firstOrFail();
-        $detail = $service->detail($cycle);
+    $cycle = CycleMensuel::where('mois', $mois)->firstOrFail();
+    $detail = $service->detail($cycle);
 
-        return response()->json([
-            'mois' => $cycle->mois,
-            'statut' => $cycle->statut,
-            'membres' => $detail,
-            'peut_designer' => $cycle->statut === 'OUVERT' && $service->peutDesigner($detail),
-        ]);
+    return response()->json([
+        'mois' => $cycle->mois,
+        'statut' => $cycle->statut,
+        'membres' => $detail,
+        'peut_designer' => $cycle->statut === 'OUVERT' && $service->peutDesigner($detail),
+        'beneficiaire_prevu' => $detail->isEmpty() ? null : (
+            $cycle->statut === 'OUVERT'
+                ? $service->prochainBeneficiaire()->only(['id', 'nom', 'ordre_tour'])
+                : $cycle->beneficiaire?->only(['id', 'nom', 'ordre_tour'])
+        ),
+    ]);
     }
 
     // Étapes 4, 5, 6 : blocage/déblocage, désignation, clôture
