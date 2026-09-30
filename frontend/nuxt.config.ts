@@ -1,5 +1,36 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true }
+
+  devtools: {
+    enabled: true
+  },
+
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:8000/api'
+    }
+  },
+
+  css: ['@/assets/css/main.css'],
+
+  app: {
+    head: {
+      title: 'TontineFlow',
+      link: [
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.googleapis.com'
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap'
+        },
+        {
+          rel: 'icon',
+          type: 'image/svg+xml',
+          href: '/logo.svg'
+        }
+      ]
+    }
+  }
 })

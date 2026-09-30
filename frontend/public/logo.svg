@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background luxury gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090E17"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#0B132B"/>
+    </linearGradient>
+
+    <!-- Emerald wealth & success gradient -->
+    <linearGradient id="flowEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Deep sapphire / cyan trust gradient -->
+    <linearGradient id="flowCyan" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="50%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+
+    <!-- Subtle golden accent for trust & premium tier -->
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+
+    <!-- Ambient glow filter -->
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.15"/>
+      <stop offset="80%" stop-color="#0EA5E9" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Container Squircle / Premium App Icon Frame -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bgGrad)"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2"/>
+  
+  <!-- Subtle inner radial glow -->
+  <circle cx="256" cy="256" r="180" fill="url(#innerGlow)"/>
+
+  <!-- Geometric Rotational / Tontine Interlocking Loops -->
+  <g transform="translate(0, 0)">
+    <!-- Back orbit ring for rhythm -->
+    <circle cx="256" cy="256" r="132" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="8"/>
+    <circle cx="256" cy="256" r="132" fill="none" stroke="url(#flowCyan)" stroke-width="4" stroke-dasharray="80 180" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Left / Upper Flow Wave (The 'T' / Solidarity Arc) -->
+    <path d="M168 184 C168 140, 212 120, 256 120 C320 120, 364 162, 364 224 C364 278, 320 310, 272 316 C224 322, 192 344, 192 384" 
+          fill="none" 
+          stroke="url(#flowCyan)" 
+          stroke-width="28" 
+          stroke-linecap="round" 
+          filter="url(#subtleGlow)"/>
+
+    <!-- Right / Lower Flow Wave (The 'F' / Cycle Completion Arc) -->
+    <path d="M344 328 C344 372, 300 392, 256 392 C192 392, 148 350, 148 288 C148 234, 192 202, 240 196 C288 190, 320 168, 320 128" 
+          fill="none" 
+          stroke="url(#flowEmerald)" 
+          stroke-width="28" 
+          stroke-linecap="round" 
+          filter="url(#subtleGlow)"/>
+
+    <!-- Center Security & Consensus Nexus (Vault Lock & Community core) -->
+    <circle cx="256" cy="256" r="34" fill="#0B132B" stroke="url(#goldAccent)" stroke-width="5"/>
+    <circle cx="256" cy="256" r="14" fill="url(#flowEmerald)"/>
+
+    <!-- Constellation node markers (12-seat collective representation) -->
+    <circle cx="256" cy="94" r="8" fill="#38BDF8"/>
+    <circle cx="390" cy="180" r="7" fill="#10B981"/>
+    <circle cx="390" cy="332" r="7" fill="#38BDF8"/>
+    <circle cx="256" cy="418" r="8" fill="#10B981"/>
+    <circle cx="122" cy="332" r="7" fill="#F59E0B"/>
+    <circle cx="122" cy="180" r="7" fill="#10B981"/>
+  </g>
+</svg>
