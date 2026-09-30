@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cotisation extends Model
 {
-    protected $table = 'cycles_mensuels';
-    protected $fillable = ['mois', 'statut', 'montant_total', 'date_cloture', 'beneficiaire_id'];
-    public function cotisations() { return $this->hasMany(Cotisation::class, 'cycle_id'); }
-    public function beneficiaire() { return $this->belongsTo(Membre::class, 'beneficiaire_id'); }
+    protected $fillable = ['membre_id', 'cycle_id', 'periode', 'montant', 'date_versement'];
+    public function membre() { return $this->belongsTo(Membre::class); }
+    public function cycle() { return $this->belongsTo(CycleMensuel::class, 'cycle_id'); }
 }
