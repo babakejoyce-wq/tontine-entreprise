@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const api = useApi()
+const { confirmer } = useConfirm()
 const membres = ref<any[]>([])
 const erreur = ref('')
 const form = reactive({ nom: '', telephone: '', ordre_tour: 1, frequence: 'MENSUELLE' })
@@ -13,6 +14,12 @@ async function charger() {
 }
 
 async function ajouter() {
+  const ok = await confirmer({
+    titre: 'Ajouter un membre',
+    message: `Vous allez ajouter « ${form.nom} » comme membre (rang #${form.ordre_tour}, cotisation ${libelle[form.frequence].toLowerCase()}).`,
+  })
+  if (!ok) return
+
   erreur.value = ''
   try {
     await api('/membres', { method: 'POST', body: { ...form } })
@@ -34,22 +41,26 @@ onMounted(charger)
     </div>
 
     <div class="card">
-      <table class="tbl">
-        <thead><tr><th>Ordre</th><th>Membre</th><th>Téléphone</th><th>Cotisation</th></tr></thead>
-        <tbody>
-          <tr v-for="m in membres" :key="m.id">
-            <td><span class="badge ok">#{{ m.ordre_tour }}</span></td>
-            <td><div class="who"><span class="avatar">{{ initiales(m.nom) }}</span>{{ m.nom }}</div></td>
-            <td>{{ m.telephone }}</td>
-            <td><span class="badge neutral">{{ libelle[m.frequence] }}</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Ordre</th><th>Membre</th><th>Téléphone</th><th>Cotisation</th></tr></thead>
+          <tbody>
+            <tr v-for="m in membres" :key="m.id">
+              <td><span class="badge ok">#{{ m.ordre_tour }}</span></td>
+              <td><div class="who"><span class="avatar">{{ initiales(m.nom) }}</span>{{ m.nom }}</div></td>
+              <td><i class="fa-solid fa-phone sub"></i> {{ m.telephone }}</td>
+              <td><span class="badge neutral">{{ libelle[m.frequence] }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="card">
       <h3>Ajouter un membre</h3>
-      <div v-if="erreur" class="alert err" style="margin-top: 12px">⚠️ {{ erreur }}</div>
+      <div v-if="erreur" class="alert err" style="margin-top: 12px">
+        <i class="fa-solid fa-triangle-exclamation"></i>{{ erreur }}
+      </div>
       <div class="inline-form" style="margin-top: 16px">
         <div class="field"><label>Nom</label><input v-model="form.nom" placeholder="Nom complet" /></div>
         <div class="field"><label>Téléphone</label><input v-model="form.telephone" placeholder="90 00 00 00" /></div>
@@ -63,7 +74,9 @@ onMounted(charger)
           </select>
         </div>
         <span></span>
-        <button class="btn primary" :disabled="!form.nom || !form.telephone" @click="ajouter">+ Ajouter</button>
+        <button class="btn primary" :disabled="!form.nom || !form.telephone" @click="ajouter">
+          <i class="fa-solid fa-user-plus"></i>Ajouter
+        </button>
       </div>
     </div>
   </div>
