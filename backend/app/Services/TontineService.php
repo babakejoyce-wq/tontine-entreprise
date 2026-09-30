@@ -41,26 +41,29 @@ class TontineService
 
     // État de chaque membre pour le cycle : payé, dû, en règle ou non
     public function detail(CycleMensuel $cycle): Collection
-    {
-        $du = config('tontine.montant_mensuel');
-        $payes = $cycle->cotisations()
-            ->selectRaw('membre_id, SUM(montant) as total')
-            ->groupBy('membre_id')
-            ->pluck('total', 'membre_id');
+{
+    $du = config('tontine.montant_mensuel');
+    $cotisations = $cycle->cotisations()->get()->groupBy('membre_id');
 
-        return Membre::orderBy('ordre_tour')->get()->map(function ($m) use ($payes, $du) {
-            $paye = (float) ($payes[$m->id] ?? 0);
-            return [
-                'id' => $m->id,
-                'nom' => $m->nom,
-                'frequence' => $m->frequence,
-                'paye' => $paye,
-                'du' => $du,
-                'en_regle' => $paye >= $du,
-            ];
-        });
-    }
+    return Membre::orderBy('ordre_tour')->get()->map(function ($m) use ($cotisations, $cycle, $du) {
+        $lignes = $cotisations->get($m->id, collect());
+        $paye = (float) $lignes->sum('montant');
+        $datesPayees = $lignes->map(fn ($c) => Carbon::parse($c->periode)->toDateString())->all();
 
+        return [
+            'id' => $m->id,
+            'nom' => $m->nom,
+            'frequence' => $m->frequence,
+            'paye' => $paye,
+            'du' => $du,
+            'en_regle' => $paye >= $du,
+            'montant_echeance' => $this->montantEcheance($m, $cycle->mois),
+            'echeances' => collect($this->echeances($m, $cycle->mois))
+                ->map(fn ($d) => ['date' => $d, 'payee' => in_array($d, $datesPayees)])
+                ->all(),
+        ];
+    });
+}
     // LA règle de blocage/déblocage : tous les membres doivent être en règle
     public function peutDesigner(Collection $detail): bool
     {
